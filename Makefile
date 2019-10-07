@@ -1,4 +1,4 @@
-all:	pipe.out fifo_server.out fifo_client.out mq_sysv.out 
+all:	pipe.out fifo_server.out fifo_client.out mq_sysv.out mq_posix.out
 
 pipe.out:	01_pipe.c
 	gcc -g -Wall 01_pipe.c -o pipe.out
@@ -11,6 +11,9 @@ fifo_client.out:	02_fifo.c
 
 mq_sysv.out:	03_mq_sysv.c
 	gcc -g -Wall 03_mq_sysv.c -o mq_sysv.out
+
+mq_posix.out:	04_mq_posix.c
+	gcc -g -Wall 04_mq_posix.c -o mq_posix.out -lrt
 
 clean:
 	rm -rf *.out fifofd
