@@ -16,4 +16,4 @@ socket_stream.out:	05_socket_stream.c
 	gcc -g -Wall 05_socket_stream.c -o socket_stream.out
 
 clean:
-	rm -rf *.out fifofd sockstreamfd
+	rm -rf *.out fifofd sockfd.*
