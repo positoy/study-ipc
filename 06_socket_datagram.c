@@ -16,59 +16,56 @@
 // socket -> bind -> sendto/recvfrom -> close
 int sock_server()
 {
-    unlink(SOCKET_UNIX_PATH);
-    int sockfd = socket(AF_UNIX, SOCK_DGRAM, 0);
-    if (sockfd == -1)
-        handle_error("failed to socket");
-
+    int sockfd;
     struct sockaddr_un addr = {
         .sun_family = AF_UNIX,
         .sun_path = SOCKET_UNIX_PATH
     };
+    char buf[1024];
+
+    unlink(SOCKET_UNIX_PATH);
+    sockfd = socket(AF_UNIX, SOCK_DGRAM, 0);
+    if (sockfd == -1)
+        handle_error("failed to socket");
+
     if (bind(sockfd, (struct sockaddr*)&addr, sizeof(struct sockaddr_un)))
         handle_error("failed to bind");
 
-    char buf[1024] = {'a'};
     while (1) {
-        sleep(1);
-        if (sendto(sockfd, buf, 1, 0, (const struct sockaddr*)&addr, sizeof(struct sockaddr_un)) == -1) {
-            perror("failed to write");
+        memset(buf, 0, sizeof(buf));
+        if (recvfrom(sockfd, buf, sizeof(buf), 0, NULL, NULL) == -1) {
+            perror("failed to recvfrom");
             continue;
         }
-        printf("data sent (%s)\n", buf);
-        buf[0] = buf[0] + 1 > 'z' ? 'a' : buf[0] + 1;
+        printf("recvfrom (%s)\n", buf);
     }
     
     close(sockfd);
     return 0;
 }
 
-// socket -> connect -> sendto/recvfrom -> close
+// socket -> sendto/recvfrom -> close
 int sock_client()
 {
-    int sockfd = socket(AF_UNIX, SOCK_DGRAM, 0);
-    if (sockfd == -1)
-        handle_error("failed to socket");
-
+    int sockfd;
     struct sockaddr_un addr = {
         .sun_family = AF_UNIX,
         .sun_path = SOCKET_UNIX_PATH
     };
-    if (connect(sockfd, (struct sockaddr*)&addr, sizeof(struct sockaddr_un)))
-        handle_error("failed to connect");
+    char data = 'a';
+    
+    sockfd = socket(AF_UNIX, SOCK_DGRAM, 0);
+    if (sockfd == -1)
+        handle_error("failed to socket");
 
-    char buf[1024];
     while (1) {
-        memset(buf, 0, sizeof(buf));
         sleep(1);
-        int ret = recvfrom(sockfd, buf, 1, 0, NULL, NULL);
-        if (ret == -1) {
-            perror("failed to recvfrom");
+        if (sendto(sockfd, &data, 1, 0, (const struct sockaddr*)&addr, sizeof(struct sockaddr_un)) == -1) {
+            perror("failed to sendto");
             continue;
-        } else {
-            printf("recv size (%d)\n", ret);
         }
-        printf("data recv (%s)\n", buf);
+        printf("sendto (%c)\n", data);
+        data = data + 1 > 'z' ? 'a' : data + 1;
     }
 
     close(sockfd);
