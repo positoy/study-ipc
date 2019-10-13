@@ -1,4 +1,4 @@
-all:	 pipe.out fifo.out mq_sysv.out mq_posix.out socket_stream.out
+all:	 pipe.out fifo.out mq_sysv.out mq_posix.out socket_stream.out socket_datagram.out
 
 pipe.out:	01_pipe.c
 	gcc -g -Wall 01_pipe.c -o pipe.out
@@ -14,6 +14,9 @@ mq_posix.out:	04_mq_posix.c
 
 socket_stream.out:	05_socket_stream.c
 	gcc -g -Wall 05_socket_stream.c -o socket_stream.out
+
+socket_datagram.out:	06_socket_datagram.c
+	gcc -g -Wall 06_socket_datagram.c -o socket_datagram.out
 
 clean:
 	rm -rf *.out fifofd sockfd.*
