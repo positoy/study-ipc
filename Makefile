@@ -1,4 +1,4 @@
-all:	 pipe.out fifo.out mq_sysv.out mq_posix.out socket_stream.out socket_datagram.out mmap_file.out mmap_anonymous.out shm_sysv.out
+all:	 pipe.out fifo.out mq_sysv.out mq_posix.out socket_stream.out socket_datagram.out mmap_file.out mmap_anonymous.out shm_sysv.out shm_posix.out
 
 pipe.out:	01_pipe.c
 	gcc -g -Wall 01_pipe.c -o pipe.out
@@ -26,6 +26,9 @@ mmap_anonymous.out:	08_mmap_anonymous.c
 
 shm_sysv.out:	09_shm_sysv.c 
 	gcc -g -Wall 09_shm_sysv.c -o shm_sysv.out -lrt
+
+shm_posix.out:	10_shm_posix.c 
+	gcc -g -Wall 10_shm_posix.c -o shm_posix.out -lrt
 
 clean:
 	rm -rf *.out fifofd sockfd.* shared_file
