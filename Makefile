@@ -1,4 +1,4 @@
-all:	 pipe.out fifo.out mq_sysv.out mq_posix.out socket_stream.out socket_datagram.out mmap_file.out mmap_anonymous.out shm_sysv.out shm_posix.out sem_sysv.out sem_posix_unnamed.out sem_posix_naemd.out
+all:	 pipe.out fifo.out mq_sysv.out mq_posix.out socket_stream.out socket_datagram.out mmap_file.out mmap_anonymous.out shm_sysv.out shm_posix.out sem_sysv.out sem_posix_unnamed.out sem_posix_naemd.out lock_flock.out lock_fcntl.out
 
 pipe.out:	01_pipe.c
 	gcc -g -Wall 01_pipe.c -o pipe.out
@@ -39,6 +39,11 @@ sem_posix_unnamed.out: 12_semaphore_posix_unnamed.c
 sem_posix_naemd.out: 13_semaphore_posix_named.c
 	gcc -g -Wall 13_semaphore_posix_named.c -o sem_posix_named.out -lpthread
 
+lock_flock.out: 14_lock_flock.c 
+	gcc -g -Wall 14_lock_flock.c -o lock_flock.out
+
+lock_fcntl.out: 14_lock_flock.c 
+	gcc -g -Wall 15_lock_fcntl.c -o lock_fcntl.out
 
 clean:
-	rm -rf *.out fifofd sockfd.* shared_file
+	rm -rf *.out fifofd sockfd.* shared_file .lock*
