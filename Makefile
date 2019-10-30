@@ -42,7 +42,7 @@ sem_posix_naemd.out: 13_semaphore_posix_named.c
 lock_flock.out: 14_lock_flock.c 
 	gcc -g -Wall 14_lock_flock.c -o lock_flock.out
 
-lock_fcntl.out: 14_lock_flock.c 
+lock_fcntl.out: 15_lock_fcntl.c 
 	gcc -g -Wall 15_lock_fcntl.c -o lock_fcntl.out
 
 clean:
